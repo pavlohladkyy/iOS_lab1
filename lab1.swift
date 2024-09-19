@@ -1,3 +1,6 @@
+import SwiftUI
+import UIKit // Instead of Cocoa
+
 // Перерахування JobPosition
 enum JobPosition {
     case developer
@@ -15,6 +18,7 @@ class Person {
         self.name = firstName
         self.surname = lastName
         self.age = age
+        
     }
 
     // Метод для виведення повної інформації
@@ -35,7 +39,16 @@ class Person {
         
         return info
     }
-
+    func birthDayYear()->String{
+        let date = Date()
+        let calendar = Calendar.current
+        let year = calendar.component(.year,from: date)
+        var infoAboutYear = "your birthday year is: "
+        if let age = age {
+            infoAboutYear += " \(year-age)"
+        }
+        return infoAboutYear
+    }
     // Метод для привітання
     func greet() -> String {
         var greeting = "Hello, \(name)"
@@ -121,28 +134,40 @@ class Employee: Person {
     }
 }
 
-// Приклади використання
-let person1 = Person(firstName: "Pavlo", lastName: "Ivanov", age: 30)
-print(person1.greet())            // Виведе: Hello, Pavlo Ivanov, you are 30 years old.
-print(greetPerson(person: person1)) // Виведе: Hello, Pavlo Ivanov, you are 30 years old.
+struct ContentView: View {
+    var body: some View {
+        VStack {
+            // Приклади використання
+            let person1 = Person(firstName: "Pavlo", lastName: "Ivanov", age: 30)
+            
+            Text(person1.greet()) // Виведе: Hello, Pavlo Ivanov, you are 30 years old.
+            Text(person1.birthDayYear())
+            Text(greetPerson(person: person1)) // Виведе: Hello, Pavlo Ivanov, you are 30 years old.
 
-let person2 = Person(firstName: "Olena", lastName: nil, age: nil)
-print(person2.greet())            // Виведе: Hello, Olena, your age is not provided.
-print(greetPerson(person: person2)) // Виведе: Hello, Olena, your age is not provided.
+            let person2 = Person(firstName: "Olena", lastName: nil, age: nil)
+            Text(person2.greet()) // Виведе: Hello, Olena, your age is not provided.
+            Text(greetPerson(person: person2)) // Виведе: Hello, Olena, your age is not provided.
 
-let address1 = Address(street: "Shevchenka St.", city: "Kyiv", postalCode: 01601)
-print(address1.fullAddress())  // Виведе: Shevchenka St., Kyiv, Postal Code: 01601
+            let address1 = Address(street: "Shevchenka St.", city: "Kyiv", postalCode: 01601)
+            Text(address1.fullAddress()) // Виведе: Shevchenka St., Kyiv, Postal Code: 01601
 
-let address2 = Address(street: "Central Ave.", city: "Lviv")
-print(address2.fullAddress())  // Виведе: Central Ave., Lviv, Postal Code: Not provided
+            let address2 = Address(street: "Central Ave.", city: "Lviv")
+            Text(address2.fullAddress()) // Виведе: Central Ave., Lviv, Postal Code: Not provided
 
-// Створення співробітника
-let employee1 = Employee(firstName: "Pavlo", lastName: "Ivanov", age: 30, jobPosition: .developer, address: address1)
+            // Створення співробітника
+            let employee1 = Employee(firstName: "Pavlo", lastName: "Ivanov", age: 30, jobPosition: .developer, address: address1)
 
-// Виведення повної інформації про співробітника
-print(employee1.fullInfo())  
-// Виведе: First Name: Pavlo, Last Name: Ivanov, Age: 30, Position: developer, Address: Shevchenka St., Kyiv, Postal Code: 01601
+            // Виведення повної інформації про співробітника
+            Text(employee1.fullInfo())
+            // Виведе: First Name: Pavlo, Last Name: Ivanov, Age: 30, Position: developer, Address: Shevchenka St., Kyiv, Postal Code: 01601
 
-// Виведення привітання
-print(employee1.greet())  
-// Виведе: Hello, Pavlo Ivanov, you are 30 years old and your position is developer.
+            // Виведення привітання
+            Text(employee1.greet())
+            // Виведе: Hello, Pavlo Ivanov, you are 30 years old and your position is developer.
+        }
+        .padding()
+    }
+}
+
+
+
